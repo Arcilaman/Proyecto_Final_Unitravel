@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Página de Inicio</title>
+</h:head>
+
+<h:body>
+    <h1>Crear hotel</h1>
+
+    <p:panel header="Crear Hotel">
+
+        <h:form>
+
+            <h:panelGrid columns="2" cellpadding="5">
+
+                <p:outputLabel for="nombre_h" value="Nombre" />
+                <p:inputText id="nombre_h" type="text" value="#{hotelBean.hotel.nombre}" required="true"/>
+
+                <p:outputLabel for="direccion_h" value="Dirección"/>
+                <p:inputText id="direccion_h" type="text" value="#{hotelBean.hotel.direccion}" required="true"/>
+
+
+                <p:outputLabel value="Ciudad: " for="ciudad_h" />
+                <p:selectOneMenu id="ciudad_h" value="#{hotelBean.hotel.ciudad}" style="min-width: 200px" required="true" converter="#{ciudadConverter}">
+                    <f:selectItem  itemLabel="Ciudad " noSelectionOption="true" />
+                    <f:selectItems value="#{hotelBean.ciudades}" var="ciudad" itemLabel="#{ciudad.nombre}" itemValue="#{ciudad}" />
+                </p:selectOneMenu>
+
+                <p:outputLabel for="tel_h" value="Telefono" />
+                <p:inputText id="tel_h" type="text" value ="#{hotelBean.hotel.telefono}" required="true"/>
+
+                <p:outputLabel for="num_estrellas_h" value="Número de estrellas" />
+                <p:inputText id="num_estrellas_h" type="number"  value="#{hotelBean.hotel.numEstrellas}" required="true" />
+
+                <p:outputLabel for="imagenes_hotel" value="Imágenes: " />
+                <p:fileUpload id="imagenes_hotel"
+                              listener="#{hotelBean.subirImagenes}" mode="advanced"
+                              multiple="true" sizeLimit="1000000" fileLimit="5"
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true" />
+
+                <p:outputLabel value="Caracteristicas: " for="caract_h" />
+                <p:selectManyCheckbox id="caract_h" value="#{hotelBean.hotel.caracteristicas}" style="min-width: 200px" required="true" converter="#{caracteristicaConverter}">
+
+                    <f:selectItems value="#{hotelBean.ciudades}" var="ciudad" itemLabel="#{ciudad.nombre}" itemValue="#{ciudad}" />
+                </p:selectManyCheckbox>
+
+            </h:panelGrid>
+
+            <p:growl showDetail="true" />
+
+            <p:commandButton value="Agregar habitaciones" onclick="PF('crear_hab').show()" icon="pi pi-plus"/>
+
+            <!-- "&nbsp;" este es un espacio entre un boton y otro -->
+            &nbsp;
+
+            <p:commandButton value="Crear Hotel" action="#{hotelBean.registrarHotel()}" update = "@form" icon="pi pi-check"/>
+
+        </h:form>
+    </p:panel>
+
+
+
+    <p:dialog header="Crear Habitacion" widgetVar="crear_hab" modal="true" minHeight="50" width="350" showEffect="fade" draggable="false">
+
+       <p:panel header="Ingresar datos">
+        <h:panelGrid columns="2" cellpadding="3">
+
+        <h:form>
+            <p:divider>
+                <p:outputLabel for="capacidad_hab" value="Capacidad de la habitacion"/>
+                <p:inputText id="capacidad_hab" type="text" value="#{habitacionBean.habitacion.capacidad}" required="true"/>
+            </p:divider>
+            <p:divider>
+                <p:outputLabel for="precio_hab" value="Precio" />
+                <p:inputText id="precio_hab" type="text" value ="#{habitacionBean.habitacion.precio}" required="true"/>
+            </p:divider>
+
+            <p:divider>
+            <p:outputLabel for="imagenes_habitacion" value="Imágenes: " />
+            <p:fileUpload id="imagenes_habitacion"
+                          listener="#{habitacionBean.subirImagenes}" mode="advanced"
+                          multiple="true" sizeLimit="1000000" fileLimit="5"
+                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" required="true" />
+            </p:divider>
+
+            <p:commandButton value="Añadir habitacion" onclick="PF('crear_hab').show()" icon="pi pi-cheack"/>
+
+
+        </h:form>
+        </h:panelGrid>
+       </p:panel>
+    </p:dialog>
+
+</h:body>
+
+
+</html>
